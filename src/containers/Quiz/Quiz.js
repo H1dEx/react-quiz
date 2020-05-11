@@ -2,9 +2,10 @@ import React, {Component} from "react";
 import styles from './Quiz.module.scss';
 import ActiveQuiz from "../../components/ActiveQuiz/ActiveQuiz";
 import FinishedQuiz from "../../components/FinishedQuiz/FinishedQuiz";
+import {withRouter} from 'react-router-dom';
 
 
-export default class Quiz extends Component {
+class Quiz extends Component {
     state = {
         results: {},
         isFinished: false,
@@ -47,6 +48,11 @@ export default class Quiz extends Component {
         ]
     }
 
+    componentDidMount() {
+        console.log('QUiz id = ', this.props.match.params.id)
+    }
+
+
     retryHandler = () => {
         this.setState({
             results: {},
@@ -57,7 +63,7 @@ export default class Quiz extends Component {
     }
 
     onAnswerClickHandler = answerId => {
-        if (this.state.answerState) {
+            if (this.state.answerState) {
             const key = Object.keys(this.state.answerState)[0];
             if (this.state.answerState[key] === 'success') return;
         }
@@ -121,3 +127,4 @@ export default class Quiz extends Component {
         );
     }
 }
+export default withRouter(Quiz);
