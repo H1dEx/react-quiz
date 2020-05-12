@@ -1,0 +1,40 @@
+@keyframes LoaderItem {
+	0% { transform: translate(-50%,-50%) rotate(0deg); }
+	100% { transform: translate(-50%,-50%) rotate(360deg); }
+}
+.LoaderItem div {
+	position: absolute;
+	width: 60px;
+	height: 60px;
+	border: 10px solid rgba(164, 8, 30, 0.69);
+	border-top-color: transparent;
+	border-radius: 100%;
+}
+.LoaderItem div {
+	animation: LoaderItem 1s linear infinite;
+	top: 50px;
+	left: 50px
+}
+.Loader {
+	width: 100px;
+	height: 100px;
+	display: inline-block;
+	overflow: hidden;
+	background: inherit;
+}
+.LoaderItem {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	transform: translateZ(0) scale(1);
+	backface-visibility: hidden;
+	transform-origin: 0 0; /* see note above */
+}
+.LoaderItem div { box-sizing: content-box; }
+
+.wrapper {
+	margin-top: 50px;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
