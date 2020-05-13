@@ -20,7 +20,6 @@ class Quiz extends Component {
     async componentDidMount() {
         try {
             const response = await axios.get(`quizes/${this.props.match.params.id}.json`);
-            console.log(response.data);
             const quiz = response.data;
             this.setState({
                 quiz, loading: false
@@ -71,7 +70,6 @@ class Quiz extends Component {
             }, 1000)
         } else {
             results[question.id] = 'error';
-            console.log(this.state.results)
             this.setState({
                 answerState: {[answerId]: 'error'},
                 results
@@ -88,7 +86,6 @@ class Quiz extends Component {
             <div className={styles.Quiz}>
                 <div className={styles.QuizWrapper}>
                     <h1>Quiz</h1>
-                    {console.log(this.state)}
                     {this.state.loading
                         ? <Loader/>
                         :  (this.state.isFinished)
