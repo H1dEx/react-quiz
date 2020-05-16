@@ -3,73 +3,60 @@ import styles from './Auth.module.scss';
 import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
 import is from 'is_js';
-import axios from 'axios';
+import {connect} from "react-redux";
+import {auth} from "../../store/actions/auth";
 
 class Auth extends Component {
 
-    state =  {
+    state = {
         isFormValid: false,
-            formControls: {
-                email: {
-                    value: '',
-                    type: 'email',
-                    label: 'Email',
-                    errorMessage: 'Email is incorrect',
-                    valid: false,
-                    touched: false,
-                    validation: {
-                        required: true,
-                        email: true
-                    }
-                },
-                password: {
-                    value: '',
-                    type: 'password',
-                    label: 'Password',
-                    errorMessage: 'Password is incorrect',
-                    valid: false,
-                    touched: false,
-                    validation: {
-                        required: true,
-                        minLength: 6
-                    }
+        formControls: {
+            email: {
+                value: '',
+                type: 'email',
+                label: 'Email',
+                errorMessage: 'Email is incorrect',
+                valid: false,
+                touched: false,
+                validation: {
+                    required: true,
+                    email: true
+                }
+            },
+            password: {
+                value: '',
+                type: 'password',
+                label: 'Password',
+                errorMessage: 'Password is incorrect',
+                valid: false,
+                touched: false,
+                validation: {
+                    required: true,
+                    minLength: 6
                 }
             }
-    }
-
-    loginHandler = async () => {
-        const authData = {
-            email: this.state.formControls.email.value,
-            password: this.state.formControls.password.value,
-            returnSecureToken: true
-        }
-        try {
-            const response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCLWdpzJMzX3wfqpqMc1XTg5DbaiDOYcLQ', authData)
-            console.log(response.data)
-        } catch (e) {
-            console.log(e)
         }
     }
 
-    registerHandler = async () => {
-        const authData = {
-            email: this.state.formControls.email.value,
-            password: this.state.formControls.password.value,
-            returnSecureToken: true
-        }
-        try {
-            const response = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCLWdpzJMzX3wfqpqMc1XTg5DbaiDOYcLQ', authData)
-            console.log(response.data)
-        } catch (e) {
-            console.log(e)
-        }
+    loginHandler = () => {
+        this.props.auth(
+            this.state.formControls.email.value,
+            this.state.formControls.password.value,
+            true
+        )
+    }
+
+    registerHandler = () => {
+        this.props.auth(
+            this.state.formControls.email.value,
+            this.state.formControls.password.value,
+            false
+        )
     }
 
     submitHandler = e => {
         e.preventDefault();
     }
-
-
 
     validateControl(value, validation) {
         if (!validation) {
@@ -120,7 +107,7 @@ class Auth extends Component {
                     type={control.type}
                     label={control.label}
                     shouldValidate={!!control.validation}
-                    onChange={ e => this.onChangeHandler(e, controlName)}
+                    onChange={e => this.onChangeHandler(e, controlName)}
                 />
             )
         })
@@ -131,27 +118,27 @@ class Auth extends Component {
             <div className={styles.Auth}>
                 <div>
                     <h1>Auth </h1>
-                        <form onSubmit={this.submitHandler} className={styles.AuthForm}>
-                            {this.renderInputs()}
-                            <Button
-                                type="success"
-                                onClick={this.loginHandler}
-                                disabled={!this.state.isFormValid}
-                            >
-                                Sign in
-                            </Button>
-                            <Button
-                                type="primary"
-                                onClick={this.registerHandler}
-                                disabled={!this.state.isFormValid}
-                            >
-                                Sign up
-                            </Button>
-                        </form>
+                    <form onSubmit={this.submitHandler} className={styles.AuthForm}>
+                        {this.renderInputs()}
+                        <Button
+                            type="success"
+                            onClick={this.loginHandler}
+                            disabled={!this.state.isFormValid}
+                        >
+                            Sign in
+                        </Button>
+                        <Button
+                            type="primary"
+                            onClick={this.registerHandler}
+                            disabled={!this.state.isFormValid}
+                        >
+                            Sign up
+                        </Button>
+                    </form>
                 </div>
             </div>
         );
     }
 }
 
-export default Auth;
+export default connect(null, {auth})(Auth);
